@@ -1,0 +1,17 @@
+#restaurants-list{
+    display: flex;
+    flex-wrap:wrap;
+}
+
+#restaurants-list li{
+    width: calc(50% - 20px);
+    margin: 0 10px 20px;
+}
+
+.select-filter-label{
+    width:calc(15% - 20px);
+}
+
+.filter-options select{
+    width:calc(30% - 20px);
+}

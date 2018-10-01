@@ -1,0 +1,51 @@
+.restaurant-maincontent{
+    padding-top:128px;
+}
+
+#restaurants-list{
+    display: flex;
+    flex-wrap:wrap;
+}
+
+#restaurants-list li{
+    width: calc(33% - 20px);
+    margin: 0 10px 20px;
+}
+
+.select-filter-label{
+    width:calc(15% - 20px);
+}
+
+.filter-options select{
+    width:calc(30% - 20px);
+}
+
+.inside #map-container {
+    height:850px;
+    background:none;
+    width: calc(50% - 20px);
+    order:2;
+    padding-bottom:40px;
+  }
+
+  #restaurant-container{
+    padding: 0px 20px;
+    width: calc(50% - 20px);
+    order:1;
+}
+
+  
+#retaurantinfo-sec1, #retaurantinfo-sec2{
+    width:100%;
+  }
+
+  #retaurantinfo-sec1{
+      margin-right:0px;
+   
+      
+  }
+
+  #reviews-container{
+      width:100%;
+      order:3;
+  }
