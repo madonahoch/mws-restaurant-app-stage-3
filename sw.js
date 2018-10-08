@@ -1,6 +1,6 @@
 self.addEventListener('install', function(event){
   event.waitUntil(
-    caches.open('restaurant-review-cache-v2').then(function(cache){
+    caches.open('restaurant-review-cache-v3').then(function(cache){
     }).catch(function(){
 
     })
@@ -15,7 +15,7 @@ self.addEventListener('fetch', function(event) {
 
       
       fetch(event.request).then(function(response1){
-        caches.open('restaurant-review-cache-v2').then(function(cache){
+        caches.open('restaurant-review-cache-v3').then(function(cache){
           cache.put(event.request, response1);
         })
       })

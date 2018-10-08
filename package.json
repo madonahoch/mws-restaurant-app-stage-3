@@ -1,0 +1,45 @@
+{
+  "name": "mws-restaurant-app-stage2",
+  "version": "1.0.0",
+  "description": "incorporating gulp into mws restaurnant reviews app",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "hi"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/madonahoch/mws-restaurant-app-stage-2.git"
+  },
+  "keywords": [
+    "2nd",
+    "stage",
+    "build",
+    "tools"
+  ],
+  "author": "Madona Hoch of course",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/madonahoch/mws-restaurant-app-stage-2/issues"
+  },
+  "homepage": "https://github.com/madonahoch/mws-restaurant-app-stage-2#readme",
+  "devDependencies": {
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
+    "gulp": "^3.9.1",
+    "gulp-image-resize": "^0.13.0",
+    "gulp-images-resizer": "0.0.5"
+  },
+  "dependencies": {
+    "gulp-autoprefixer": "^6.0.0",
+    "gulp-babel": "^8.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-flatten": "^0.4.0",
+    "gulp-imagemin": "^4.1.0",
+    "gulp-sass": "^4.0.1",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-uglify": "^3.0.1",
+    "gulp-uglify-es": "^1.0.4",
+    "gulp-webp": "^3.0.0",
+    "lazy-load-images": "^1.0.1"
+  }
+}

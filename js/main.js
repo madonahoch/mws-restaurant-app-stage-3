@@ -15,6 +15,7 @@ SW_Register = () => {
 
 SW_Register();
 
+
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
  */
@@ -91,6 +92,7 @@ window.initMap = () => {
     center: loc,
     scrollwheel: false
   });
+  
   updateRestaurants();
 }
 
@@ -154,6 +156,7 @@ createRestaurantHTML = (restaurant) => {
 
   const image = document.createElement('img');
   image.className = 'restaurant-img';
+  //image.setAttribute('data-lazy-load-src', DBHelper.imageUrlForRestaurant(restaurant));
   image.src = DBHelper.imageUrlForRestaurant(restaurant);
   image.alt = restaurant.name;
   li.append(image);

@@ -5,11 +5,14 @@
   <!-- Normalize.css for better cross-browser consistency -->
   <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
   <!-- Main CSS file -->
-  <link rel="stylesheet" href="css/styles.css" type="text/css">
-  <link rel="stylesheet" media="screen and (min-width: 1100px)" href="css/over1100.css" />
+  <link rel="stylesheet" href="dist/css/styles.css" type="text/css">
+  <link rel="stylesheet" media="screen and (min-width: 1100px)" href="dist/css/over1100.css" />
+  <link href="manifest.json" rel="manifest">
   <title>Restaurant Info</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="theme-color" content="#3367D6">
 
 </head>
 
@@ -66,12 +69,10 @@
   <!-- End footer -->
 
   <!-- Beginning scripts -->
-  <!-- Database helpers -->
-  <script type="application/javascript" charset="utf-8" src="js/idb.js"></script>
-  <script type="application/javascript" charset="utf-8" src="js/idb-app.js"></script>
-  <script type="text/javascript" src="js/dbhelper.js"></script>
-  <!-- Main javascript file -->
-  <script type="text/javascript" src="js/restaurant_info.js"></script>
+  <!-- JS main file -->
+  <script type="application/javascript" charset="utf-8" src="/js/restaurant_info.js"></script>
+ <!-- JS helpers -->
+  <script type="application/javascript" charset="utf-8" src="dist/js/all.js"></script>
   <!-- Google Maps -->
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDdi0BhQox8JH-rvLQQvWdGoI4bW0s71jg&libraries=places&callback=initMap"></script>
   <!-- End scripts -->

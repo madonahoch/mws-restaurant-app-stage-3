@@ -1,0 +1,17 @@
+{
+    "short_name": "Restaurants",
+    "name": "Restaurants Review APP",
+    "icons": [
+      {
+        "src": "/dist/img/rest-home-512.png",
+        "type": "image/png",
+        "sizes": "512x512"
+      }
+    ],
+    "start_url": "/",
+    "background_color": "#3367D6",
+    "display": "standalone",
+    "scope": "/",
+    "theme_color": "#3367D6"
+  }
+  
