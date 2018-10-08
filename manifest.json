@@ -3,7 +3,7 @@
     "name": "Restaurants Review APP",
     "icons": [
       {
-        "src": "/dist/img/rest-home-512.png",
+        "src": "/src/img/rest-home-512.png",
         "type": "image/png",
         "sizes": "512x512"
       }
