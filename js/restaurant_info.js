@@ -111,6 +111,18 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   const name = document.getElementById('restaurant-name');
   name.innerHTML = restaurant.name;
 
+  const isFav = document.getElementById('is-Fav');
+  let fav = false;
+
+  if (typeof restaurant.is_favorite === 'string' || restaurant.is_favorite instanceof String){
+    fav = JSON.parse(restaurant.is_favorite);
+  }
+  else{
+    fav = restaurant.is_favorite;
+  }
+
+  isFav.checked =  fav;
+
   const address = document.getElementById('restaurant-address');
   address.innerHTML = restaurant.address;
 
@@ -241,35 +253,35 @@ submitReview = () => {
     'comments' : comments
   };
 
-//try posting review to server
-  postReviewToServer(api_host, data)
-        .then(function() {
-       //   console.log('Review has been submitted properly to the server');
-        })
-        .catch(function(error) {
-          console.log(`error occured while posting review to the server ${error}`);
-          data.offline = 1;
-        })
-        .then(() => {
-          var restaurantDB = new RestaurantDB();
-          data.createdAt = new Date();
-          data.updatedAt = data.createdAt;
+    //try posting review to server
+    postReviewToServer(api_host, data)
+            .then(function() {
+          //   console.log('Review has been submitted properly to the server');
+            })
+            .catch(function(error) {
+              console.log(`error occured while posting review to the server ${error}`);
+              data.offline = 1;
+            })
+            .then(() => {
+              var restaurantDB = new RestaurantDB();
+              data.createdAt = new Date();
+              data.updatedAt = data.createdAt;
 
-          return restaurantDB.InsertRestaurantReviewIntoIndexedDB(data, restaurantid)
-                .then(function(response){
-                  console.log('review has been inserted successfuly. from rest_info.js file');
-                });
-        })
-        .then(() => {
-          if(data.offline == null){ //only show on the front end if it was successfully submitted to the server
-            const ul = document.getElementById('reviews-list');
-            ul.appendChild(createReviewHTML(data));
-          }
-          
-          var subLabel = document.getElementById('Submission-label');
-          subLabel.innerHTML = "Review has been submitted successfully!";
-          clearReviewForm();
-          })
+              return restaurantDB.InsertRestaurantReviewIntoIndexedDB(data, restaurantid)
+                    .then(function(response){
+                      console.log('review has been inserted successfuly. from rest_info.js file');
+                    });
+            })
+            .then(() => {
+              if(data.offline == null){ //only show on the front end if it was successfully submitted to the server
+                const ul = document.getElementById('reviews-list');
+                ul.appendChild(createReviewHTML(data));
+              }
+              
+              var subLabel = document.getElementById('Submission-label');
+              subLabel.innerHTML = "Review has been submitted successfully!";
+              clearReviewForm();
+              })
 }
 
 postReviewToServer = (url = ``, data = {}) => {
@@ -298,4 +310,35 @@ clearReviewForm = () =>{
   document.getElementById('username').value = "";
   document.getElementById('comments-textarea').value = "";
   document.getElementById('rating-select').value = 3;
+}
+
+ToggleFavRestaurant = () => {
+  const isFav = document.getElementById('is-Fav');
+  const id = parseInt(getParameterByName('id'), 10);
+  PutFavRestaurant(api_host, id, isFav.checked)
+  .then(function(){
+    var restaurantDB = new RestaurantDB();
+    restaurantDB.GetRestaurants(id).then(function(rest){
+      rest[0].is_favorite = isFav.checked;
+
+      return restaurantDB.InsertRestaurantsIntoIndexedDB(rest);
+    })
+  })
+}
+
+PutFavRestaurant = (url = ``, restid, isFav) => {
+  let favUrl = `${url}restaurants/${restid}/?is_favorite=${isFav}`
+  return fetch(favUrl, {
+    method : 'PUT', 
+    headers : {
+      'Content-Type' : 'application/json; charset=utf-8'
+    }
+  })
+  .then(function() {
+    console.log('Toggle Fav Succeeded!');
+  })
+  .catch(function(error) {
+    console.log(`${error}`);
+    //data.offline = 1;
+  });
 }

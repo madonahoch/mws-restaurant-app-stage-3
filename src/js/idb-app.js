@@ -18,21 +18,33 @@ class RestaurantDB {
             var tx = db.transaction('Restaurants', 'readwrite');
             var restObjStore = tx.objectStore('Restaurants');
 
-            restaurants.forEach(rest => {
-                restObjStore.put(rest);
-            });
+            if(restaurants.constructor === Array){
+                restaurants.forEach(rest => {
+                    restObjStore.put(rest);
+                });
+            }
+            else{
+                restObjStore.put(restaurants);
+            }
+            
             return tx.complete;
         }).then(function(){
             console.log('All Restaurants have been inserted to indexed DB.');
         })
     }
 
-    GetRestaurants(){
+    GetRestaurants(id = null){
         return this.dbPromise.then(function(db){
             var tx = db.transaction('Restaurants');
             var restObjStore = tx.objectStore('Restaurants');
 
-            return restObjStore.getAll();
+            if(id != null){
+                return restObjStore.getAll(id);
+            }
+            else{
+                return restObjStore.getAll();
+            }
+
         }).then(function(restaurants){
             if (!restaurants) console.log(`Restaurants were NOT found!`);
 
