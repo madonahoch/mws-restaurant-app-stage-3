@@ -192,11 +192,12 @@ createReviewHTML = (review) => {
   li.appendChild(name);
 
   const date = document.createElement('p');
-  date.innerHTML = review.createdAt;
+  const createDate = new Date(review.createdAt)
+  date.innerHTML = createDate.toLocaleDateString("en-US");
   li.appendChild(date);
 
   const rating = document.createElement('p');
-  rating.innerHTML = `Rating: ${review.rating}`;
+  rating.innerHTML = `<strong>Rating</strong>: ${review.rating}`;
   li.appendChild(rating);
 
   const comments = document.createElement('p');

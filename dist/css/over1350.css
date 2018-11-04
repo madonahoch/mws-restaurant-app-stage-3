@@ -1,0 +1,1 @@
+#restaurants-list{display:-webkit-box;display:-ms-flexbox;display:flex;-ms-flex-wrap:wrap;flex-wrap:wrap}#restaurants-list li{width:calc(25% - 20px);margin:0 10px 20px}.select-filter-label{width:calc(15% - 20px)}.filter-options select{width:calc(30% - 20px)}

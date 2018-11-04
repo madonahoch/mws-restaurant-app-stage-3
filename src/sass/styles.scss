@@ -290,18 +290,65 @@ color:#FFFFFF;
 }
 #reviews-list li {
   background-color: #fff;
-    border: 2px solid #f3f3f3;
+    border: 2px solid #333;
   display: block;
   list-style-type: none;
   margin: 0 0 30px;
   overflow: hidden;
+  padding:20px;
   position: relative;
-  width: 100%;
 }
 #reviews-list li p {
   margin: 10px 10px;
+  font-size:1.1em;
+}
+#reviews-list li p:first-child {
+  font-size:2em;
+  font-weight:bold;
 }
 
+#submitreview-form label {
+  display:block;
+  margin-top:15px;
+}
+#write-a-review { 
+  padding:5px 15px; 
+  position:relative;
+  background:#fff;
+  margin:10px 0;
+  border-radius:0;
+  font-size:.9em;
+}
+#submitreview-form {
+  background:#fff;
+  border:2px solid #ccc;
+  padding:15px;
+  margin:15px 0;
+}
+#submitreview-form input,
+#submitreview-form select,
+#submitreview-form textarea {
+  width:300px;
+  padding:7px;
+}
+#submitreview-form button {
+  background-color: #a66900;
+  border-bottom: 3px solid #eee;
+  color: #ffffff;
+  display: block;
+  font-size: 1.2em;
+  min-width:150px;
+  text-align:center;
+  text-align: center;
+  text-transform: uppercase;
+  line-height: 3;
+  text-decoration: none;
+  cursor:pointer;
+}
+#submitreview-form button:hover, 
+#submitreview-form button:focus {
+  text-decoration: underline;
+}
 .checked {
   color: orange;
 }
