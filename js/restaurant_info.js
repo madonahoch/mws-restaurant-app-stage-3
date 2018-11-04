@@ -1,4 +1,4 @@
-import { reverse } from "dns";
+//import { reverse } from "dns";
 
 let restaurant;
 var map;
@@ -22,7 +22,7 @@ SW_Register();
 window.initMap = () => {
   fetchRestaurantFromURL((error, restaurant) => {
     if (error) { // Got an error!
-      console.error(error);
+   //   console.error(error);
     } else {
       self.map = new google.maps.Map(document.getElementById('map'), {
         zoom: 16,
@@ -51,17 +51,41 @@ fetchRestaurantFromURL = (callback) => {
     DBHelper.fetchRestaurantById(id, (error, restaurant) => {
       self.restaurant = restaurant;
       if (!restaurant) {
-        console.error(error);
+     //   console.error(error);
         return;
       }
 
       fillRestaurantHTML();
 
       GetReviews(id).then(function() {
-        fillReviewsHTML();
-      });
+        new Promise(function(){
+          self.restaurant.reviews.forEach(rev => {
+            if (rev.offline != null && rev.offline == 1){
+                let serverRev = Object.assign({}, rev);
+    
+                delete serverRev.offline; //remove offline property
 
-      callback(null, restaurant);
+                return postReviewToServer(api_host, serverRev)
+                .then(function(){
+                  if( serverRev.offline != null) { //the server is still down and review was not submitted successfully
+                    return false;
+                  } 
+                  else{  //if review was successfully submitted to the server, remove offline property from the indexeddb for this review
+                    delete rev.offline;
+                    var restaurantDB = new RestaurantDB();
+                     restaurantDB.InsertRestaurantReviewIntoIndexedDB(rev, id);
+                     console.log(`offline property has been removed properly from indexeddb for review ${rev.id}`);
+                     const ul = document.getElementById('reviews-list');
+                    ul.appendChild(createReviewHTML(rev));
+                  }
+                })
+            }
+          })
+        }) 
+      }).then(function(){
+        self.restaurant.reviews = self.restaurant.reviews.filter(re => re.offline == null);
+        fillReviewsHTML();
+      })
     });
   }
 }
@@ -69,8 +93,7 @@ fetchRestaurantFromURL = (callback) => {
 GetReviews = (id) => {
   return DBHelper.fetchRestaurantReviews(id).then(function(reviews) {
     if(!reviews){
-      console.log('error exiissstssss');
-      //callback(error, restaurant);
+      console.log('error found while fetching reviews');
     }
     else{
       self.restaurant.reviews = reviews;
@@ -219,9 +242,9 @@ submitReview = () => {
   };
 
 //try posting review to server
-  return postReviewToServer(api_host, data)
+  postReviewToServer(api_host, data)
         .then(function() {
-          console.log('Review has been submitted properly to the server');
+       //   console.log('Review has been submitted properly to the server');
         })
         .catch(function(error) {
           console.log(`error occured while posting review to the server ${error}`);
@@ -238,8 +261,11 @@ submitReview = () => {
                 });
         })
         .then(() => {
-          const ul = document.getElementById('reviews-list');
-          ul.appendChild(createReviewHTML(data));
+          if(data.offline == null){ //only show on the front end if it was successfully submitted to the server
+            const ul = document.getElementById('reviews-list');
+            ul.appendChild(createReviewHTML(data));
+          }
+          
           var subLabel = document.getElementById('Submission-label');
           subLabel.innerHTML = "Review has been submitted successfully!";
           clearReviewForm();
@@ -254,11 +280,15 @@ postReviewToServer = (url = ``, data = {}) => {
       'Content-Type' : 'application/json; charset=utf-8'
     },
     body : JSON.stringify(data)
-  }).then(function(response) {
+  })
+  .then(function() {
+    console.log('');
+  })
+  .then(function(response) {
     console.log('');
   })
   .catch(function(error) {
-    console.log(error);
+    console.log(`${error}`);
     data.offline = 1;
   });
 }
