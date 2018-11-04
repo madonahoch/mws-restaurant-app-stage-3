@@ -85,9 +85,11 @@ fetchRestaurantFromURL = (callback) => {
       }).then(function(){
         self.restaurant.reviews = self.restaurant.reviews.filter(re => re.offline == null);
         fillReviewsHTML();
+        callback(null, self.restaurant);
       })
     });
   }
+
 }
 
 GetReviews = (id) => {
