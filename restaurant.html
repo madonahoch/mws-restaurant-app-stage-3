@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="dist/css/styles.css" type="text/css">
   <link rel="stylesheet" media="screen and (min-width: 1100px)" href="dist/css/over1100.css" />
   <link href="manifest.json" rel="manifest">
+  <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">-->
   <title>Restaurant Info</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -56,6 +57,35 @@
     <!-- end restaurant -->
     <!-- Beginning reviews -->
     <section id="reviews-container" aria-label="Restaurant Reviews">
+      <button id="write-a-review" onclick="showReviewForm()">Write a review</button>
+      <form id="submitreview-form" hidden> 
+
+          <!--<span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star"></span>
+          <span class="fa fa-star"></span>-->
+
+
+          <select id="rating-select">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3" selected>3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select> 
+
+        <label for="username">User Name</label>
+        <input type="text" id="username" required>
+
+        <label for="comments-textarea">Comments</label>
+        <textarea id="comments-textarea"></textarea>
+
+        <button onclick="submitReview()" type="button">Submit</button>
+
+        <label id="Submission-label"></label>
+
+      </form>
       <ul id="reviews-list"></ul>
     </section>
     <!-- End reviews -->

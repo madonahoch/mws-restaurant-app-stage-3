@@ -30,16 +30,22 @@
     "gulp-images-resizer": "0.0.5"
   },
   "dependencies": {
+    "autoprefixer": "^9.2.1",
+    "concat": "^1.0.3",
+    "flatten": "^1.0.2",
     "gulp-autoprefixer": "^6.0.0",
     "gulp-babel": "^8.0.0",
     "gulp-concat": "^2.6.1",
     "gulp-flatten": "^0.4.0",
     "gulp-imagemin": "^4.1.0",
-    "gulp-sass": "^4.0.1",
+    "gulp-sass": "^4.0.2",
     "gulp-sourcemaps": "^2.6.4",
     "gulp-uglify": "^3.0.1",
     "gulp-uglify-es": "^1.0.4",
     "gulp-webp": "^3.0.0",
-    "lazy-load-images": "^1.0.1"
+    "image-resize": "^1.0.10",
+    "imagemin": "^6.0.0",
+    "lazy-load-images": "^1.0.1",
+    "uglify-es": "^3.3.9"
   }
 }

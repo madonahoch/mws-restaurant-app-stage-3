@@ -1,3 +1,4 @@
+
 /**
  * Common database helper functions.
  */
@@ -9,7 +10,7 @@ class DBHelper {
    */
   static get API_Server_URL() {
     const port = 1337 // Change this to your server port
-    return `http://localhost:${port}/restaurants`;
+    return `http://localhost:${port}`;
   }
 
 
@@ -23,7 +24,7 @@ class DBHelper {
 
     return restaurantDB.GetRestaurants().then(function(restaurants){
       if(!restaurants || restaurants.length == 0){
-        return fetch(DBHelper.API_Server_URL)
+        return fetch(`${DBHelper.API_Server_URL}/restaurants`)
         .then(function(response){
           return response.json();
         }).then(function (jsonResponse){
@@ -39,8 +40,37 @@ class DBHelper {
     }).catch(function(){
       console.log('error occurred while getting restaurants');
     });
+  }
 
-    
+    /**
+   * Fetch all restaurant reviews.
+   */
+  static fetchRestaurantReviews(id) {
+
+  var restaurantDB = new RestaurantDB();
+
+    return restaurantDB.GetRestaurantReviews(parseInt(id, 10)).then(function(reviews){
+      if(!reviews || reviews.length == 0){
+        return fetch(`${DBHelper.API_Server_URL}/reviews/?restaurant_id=${id}`)
+        .then(function(response){
+          return response.json();
+        }).then(function (jsonResponse){
+          jsonResponse.forEach(rev => {
+            rev.restaurant_id = parseInt(rev.restaurant_id);
+          }); 
+          restaurantDB.InsertRestaurantReviewsIntoIndexedDB(jsonResponse, id);
+          return jsonResponse;
+        } )
+      }
+  
+      else{
+        console.log(`Reviews from db are: ${reviews}`);
+       return reviews;
+      }
+    }).catch(function(){
+      console.log('error occurred while getting reviews');
+    return null;
+    });
   }
 
   /**
@@ -59,6 +89,23 @@ class DBHelper {
         }
     }).catch(Error('Unexpected Error occurred fetching restaurants'))
   }
+
+    /**
+   * Fetch restaurant reviews by its ID.
+   */
+  /*static fetchReviewsByRestaurantId(id, callback) {
+    // fetch all restaurants with proper error handling.
+
+    DBHelper.fetchRestaurants().then(function(restaurantsJson){
+      const restaurant = restaurantsJson.find(r => r.id == id);
+     
+        if (restaurant) { // Got the restaurant
+          callback(null, restaurant);
+        } else { // Restaurant does not exist in the database
+          callback('Restaurant does not exist', null);
+        }
+    }).catch(Error('Unexpected Error occurred fetching restaurants'))
+  }*/
 
   /**
    * Fetch restaurants by a cuisine type with proper error handling.

@@ -13,9 +13,11 @@ var imageResize = require('gulp-image-resize');
 let resizer = require('gulp-images-resizer');
 
 
-gulp.task('default', [], (done) => {
+gulp.task('default', ['scripts-dist'], (done) => {
     console.log('Hello, Gulp!!');
-    gulp.watch('/src/**/*.scss', gulp.series('styles'));
+   // gulp.watch('/src/**/*.scss', gulp.series('styles'));
+
+    gulp.watch('/src/**/*.js', ['scripts-dist']);
 
     // browserSync.init({ //calling .init on browserSync starts the server.
     //     server: "./" //This will need to be changed to ./dist if we're using the dist folder to copy index.html in it
@@ -58,14 +60,13 @@ gulp.task('scripts', (done) => { //this to combine scripts into one file for dev
 });
 
 gulp.task('scripts-dist', (done) => { //this to combine scripts into one file for prod env.
-    gulp
-    .src('./src/**/*.js')
-    .pipe(babel())
-    .pipe(sourcemaps.init())
-    .pipe(concat('all.js')) //This plugin takes the files in the stream and combines them into a single file named to whatever you provide in the argument
-    .pipe(uglify()) //minifying the generated all.js file. This is only needed in prod. mode and that's why we didn't add it to the 'scripts' task
-    .pipe(sourcemaps.write())
-    .pipe(gulp.dest('./dist/js/'));
+    gulp.src('./src/**/*.js')
+        .pipe(babel())
+        //.pipe(sourcemaps.init())
+        .pipe(concat('all.js')) //This plugin takes the files in the stream and combines them into a single file named to whatever you provide in the argument
+        .pipe(uglify()) //minifying the generated all.js file. This is only needed in prod. mode and that's why we didn't add it to the 'scripts' task
+        //.pipe(sourcemaps.write())
+        .pipe(gulp.dest('./dist/js/'));
 
     done();
 });

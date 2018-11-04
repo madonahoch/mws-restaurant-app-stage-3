@@ -1,5 +1,9 @@
+import { reverse } from "dns";
+
 let restaurant;
 var map;
+const port = 1337;
+const api_host = `http://localhost:${port}/`;
 
 SW_Register = () => {
   if (!navigator.serviceWorker) return;
@@ -50,10 +54,31 @@ fetchRestaurantFromURL = (callback) => {
         console.error(error);
         return;
       }
+
       fillRestaurantHTML();
-      callback(null, restaurant)
+
+      GetReviews(id).then(function() {
+        fillReviewsHTML();
+      });
+
+      callback(null, restaurant);
     });
   }
+}
+
+GetReviews = (id) => {
+  return DBHelper.fetchRestaurantReviews(id).then(function(reviews) {
+    if(!reviews){
+      console.log('error exiissstssss');
+      //callback(error, restaurant);
+    }
+    else{
+      self.restaurant.reviews = reviews;
+    }
+  })
+  .catch(function(error) {
+    console.log(error);
+  });
 }
 
 /**
@@ -78,8 +103,6 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   if (restaurant.operating_hours) {
     fillRestaurantHoursHTML();
   }
-  // fill reviews
-  fillReviewsHTML();
 }
 
 /**
@@ -134,7 +157,7 @@ createReviewHTML = (review) => {
   li.appendChild(name);
 
   const date = document.createElement('p');
-  date.innerHTML = review.date;
+  date.innerHTML = review.createdAt;
   li.appendChild(date);
 
   const rating = document.createElement('p');
@@ -172,4 +195,77 @@ getParameterByName = (name, url) => {
   if (!results[2])
     return '';
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+
+showReviewForm = () => {
+  document.getElementById('submitreview-form').removeAttribute('hidden');
+}
+
+submitReview = () => {
+  let reviewername = document.getElementById('username').value;
+
+  let restaurantid = parseInt(getParameterByName('id'), 10);
+
+  let e = document.getElementById('rating-select');
+  let rating = e.options[e.selectedIndex].value;
+
+  let comments = document.getElementById('comments-textarea').value;
+
+  let data = {
+    'restaurant_id' : restaurantid,
+    'name' : reviewername,
+    'rating' : rating,
+    'comments' : comments
+  };
+
+//try posting review to server
+  return postReviewToServer(api_host, data)
+        .then(function() {
+          console.log('Review has been submitted properly to the server');
+        })
+        .catch(function(error) {
+          console.log(`error occured while posting review to the server ${error}`);
+          data.offline = 1;
+        })
+        .then(() => {
+          var restaurantDB = new RestaurantDB();
+          data.createdAt = new Date();
+          data.updatedAt = data.createdAt;
+
+          return restaurantDB.InsertRestaurantReviewIntoIndexedDB(data, restaurantid)
+                .then(function(response){
+                  console.log('review has been inserted successfuly. from rest_info.js file');
+                });
+        })
+        .then(() => {
+          const ul = document.getElementById('reviews-list');
+          ul.appendChild(createReviewHTML(data));
+          var subLabel = document.getElementById('Submission-label');
+          subLabel.innerHTML = "Review has been submitted successfully!";
+          clearReviewForm();
+          })
+}
+
+postReviewToServer = (url = ``, data = {}) => {
+  let reviewUrl = `${url}reviews/`
+  return fetch(reviewUrl, {
+    method : 'POST', 
+    headers : {
+      'Content-Type' : 'application/json; charset=utf-8'
+    },
+    body : JSON.stringify(data)
+  }).then(function(response) {
+    console.log('');
+  })
+  .catch(function(error) {
+    console.log(error);
+    data.offline = 1;
+  });
+}
+
+
+clearReviewForm = () =>{
+  document.getElementById('username').value = "";
+  document.getElementById('comments-textarea').value = "";
+  document.getElementById('rating-select').value = 3;
 }
