@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/madonahoch/mws-restaurant-app-stage-2#readme",
   "devDependencies": {
-    "@babel/core": "^7.1.2",
+    "@babel/core": "^7.20.7",
     "@babel/preset-env": "^7.1.0",
     "gulp": "^3.9.1",
     "gulp-image-resize": "^0.13.0",
